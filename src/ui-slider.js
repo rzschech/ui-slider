@@ -136,14 +136,19 @@
       return {
         restrict: 'EAC',
         require: ['^uiSlider', '?ngModel'],
+        scope: {
+          ngModel: '=',
+          position: '@'
+        },
+        template: '<div ng-if="position" class="{{position}}">{{ngModel}}</div>',
         link: function (scope, iElement, iAttrs, controller) {
           if (!controller[1]) return;
           var ngModel = controller[1];
           var uiSliderCtrl = controller[0];
           var animationFrameRequested;
           var _cache = {
-            min: uiSliderCtrl.min,
-            max: uiSliderCtrl.max,
+            min: uiSliderCtrl.min || ngModel.min,
+            max: uiSliderCtrl.max || ngModel.max,
             step: uiSliderCtrl.step
           };
 
