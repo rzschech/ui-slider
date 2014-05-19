@@ -140,7 +140,7 @@
           ngModel: '=',
           position: '@'
         },
-        template: '<div ng-if="position" class="{{position}}">{{ngModel}}</div>',
+        template: '<div ng-if="position" class="{{position}}">{{ngModel | number:1}}</div>',
         link: function (scope, iElement, iAttrs, controller) {
           if (!controller[1]) return;
           var ngModel = controller[1];
