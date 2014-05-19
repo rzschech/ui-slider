@@ -138,9 +138,10 @@
         require: ['^uiSlider', '?ngModel'],
         scope: {
           ngModel: '=',
-          position: '@'
+          position: '@', 
+          decimals: '@'
         },
-        template: '<div ng-if="position" class="{{position}}">{{ngModel | number:1}}</div>',
+        template: '<div ng-if="position" class="{{position}}">{{ngModel | number:decimals}}</div>',
         link: function (scope, iElement, iAttrs, controller) {
           if (!controller[1]) return;
           var ngModel = controller[1];
