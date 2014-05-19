@@ -159,7 +159,7 @@
           function _formatValue(value, min, max, step) {
             var formattedValue = value;
             if (min > max) return max;
-            formattedValue = Math.floor(formattedValue / step) * step;
+            formattedValue = Math.round(formattedValue / step) * step;
             formattedValue = Math.max(Math.min(formattedValue, max), min);
             return formattedValue;
           }
@@ -272,10 +272,10 @@
           // Checks that it's on the step
           ngModel.$parsers.push(function stepParser(value) {
             ngModel.$setValidity('step', true);
-            return Math.floor(value / _cache.step) * _cache.step;
+            return Math.round(value / _cache.step) * _cache.step;
           });
           ngModel.$formatters.push(function stepValidator(value) {
-            if (!ngModel.$isEmpty(value) && value !== Math.floor(value / _cache.step) * _cache.step) {
+            if (!ngModel.$isEmpty(value) && value !== Math.round(value / _cache.step) * _cache.step) {
               ngModel.$setValidity('step', false);
               return undefined;
             } else {
