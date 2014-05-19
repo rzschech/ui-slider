@@ -147,8 +147,8 @@
           var uiSliderCtrl = controller[0];
           var animationFrameRequested;
           var _cache = {
-            min: uiSliderCtrl.min || ngModel.min,
-            max: uiSliderCtrl.max || ngModel.max,
+            min: (iAttrs.min ? iAttrs.min : uiSliderCtrl.min) || ngModel.min,
+            max: (iAttrs.max ? iAttrs.max : uiSliderCtrl.max) || ngModel.max,
             step: iAttrs.step ? iAttrs.step : uiSliderCtrl.step
           };
 
@@ -193,7 +193,7 @@
           scope.$on('global min changed', function observeGlobalMin() {
             var oldVal = _cache.min;
 
-            _cache.min = (angular.isDefined(iAttrs.min)) ? iAttrs.min : uiSliderCtrl.min;
+            _cache.min = (angular.isDefined(iAttrs.min)) ? _cache.min : uiSliderCtrl.min;
             // Secure no NaN here...
             _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
 
@@ -214,7 +214,7 @@
           scope.$on('global max changed', function observeGlobalMax() {
             var oldVal = _cache.max;
 
-            _cache.max = (angular.isDefined(iAttrs.max)) ? iAttrs.max : uiSliderCtrl.max;
+            _cache.max = (angular.isDefined(iAttrs.max)) ? _cache.max : uiSliderCtrl.max;
             // Secure no NaN here...
             _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
 
@@ -235,7 +235,7 @@
           scope.$on('global step changed', function observeGlobalStep() {
             var oldVal = _cache.step;
 
-            _cache.step = (angular.isDefined(iAttrs.step)) ? iAttrs.step : uiSliderCtrl.step;
+            _cache.step = (angular.isDefined(iAttrs.step)) ? _cache.step : uiSliderCtrl.step;
 
             // Secure no NaN here...
             _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
