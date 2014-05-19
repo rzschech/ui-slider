@@ -149,7 +149,7 @@
           var _cache = {
             min: uiSliderCtrl.min || ngModel.min,
             max: uiSliderCtrl.max || ngModel.max,
-            step: uiSliderCtrl.step
+            step: iAttrs.step ? iAttrs.step : uiSliderCtrl.step
           };
 
           ////////////////////////////////////////////////////////////////////
