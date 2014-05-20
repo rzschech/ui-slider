@@ -187,6 +187,9 @@
             _cache.min = +newVal;
             _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
 
+            var minSliderElem = angular.element(iElement.parent()[0].getElementsByClassName('ui-slider-thumb')[0] || iElement.parent()[0].getElementsByTagName('ui-slider-thumb')[0]);
+            (_cache.min == uiSliderCtrl.max) ? minSliderElem.addClass('minAtMax') : minSliderElem.removeClass('minAtMax');
+
             updateIfChanged(_cache.min, oldVal);
 
             ngModel.$render();
