@@ -138,9 +138,8 @@
         require: ['^uiSlider', '?ngModel'],
         scope: {
           ngModel: '=',
-          position: '@', 
-          decimals: '@',
-          default: '='
+          position: '@',
+          decimals: '@'
         },
         template: '<div ng-if="position" class="{{position}}">{{ngModel | number:decimals}}</div>',
         link: function (scope, iElement, iAttrs, controller) {
@@ -149,8 +148,8 @@
           var uiSliderCtrl = controller[0];
           var animationFrameRequested;
           var _cache = {
-            min: (iAttrs.default ? iAttrs.default : uiSliderCtrl.min),
-            max: (iAttrs.default ? iAttrs.default : uiSliderCtrl.max),
+            min: iAttrs.min ? iAttrs.min : uiSliderCtrl.min,
+            max: iAttrs.max ? iAttrs.max : uiSliderCtrl.max,
             step: iAttrs.step ? iAttrs.step : uiSliderCtrl.step
           };
 
@@ -230,11 +229,12 @@
           // Observe the step attr (default 1)
           iAttrs.$observe('step', function observeStep(newVal) {
             var oldVal = _cache.step;
-            _cache.step = +newVal;
+
+//            _cache.step = +newVal;
+            _cache.step = newVal; //fix for step breaking the min/max thumb positioning
             _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
             updateIfChanged(_cache.step, oldVal);
-
             ngModel.$render();
           });
           scope.$on('global step changed', function observeGlobalStep() {
