@@ -139,7 +139,8 @@
         scope: {
           ngModel: '=',
           position: '@', 
-          decimals: '@'
+          decimals: '@',
+          default: '='
         },
         template: '<div ng-if="position" class="{{position}}">{{ngModel | number:decimals}}</div>',
         link: function (scope, iElement, iAttrs, controller) {
@@ -148,8 +149,8 @@
           var uiSliderCtrl = controller[0];
           var animationFrameRequested;
           var _cache = {
-            min: (iAttrs.min ? iAttrs.min : uiSliderCtrl.min) || ngModel.min,
-            max: (iAttrs.max ? iAttrs.max : uiSliderCtrl.max) || ngModel.max,
+            min: (iAttrs.default ? iAttrs.default : uiSliderCtrl.min),
+            max: (iAttrs.default ? iAttrs.default : uiSliderCtrl.max),
             step: iAttrs.step ? iAttrs.step : uiSliderCtrl.step
           };
 
