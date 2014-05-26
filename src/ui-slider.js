@@ -75,21 +75,21 @@
             iAttrs.$observe('min', function (newVal) {
               controller.min = +newVal;
               controller.min = !isNaN(controller.min) ? controller.min : 0;
-              scope.$emit('global min changed');
+              scope.$broadcast('global min changed');
             });
 
             // Observe the max attr (default 100)
             iAttrs.$observe('max', function (newVal) {
               controller.max = +newVal;
               controller.max = !isNaN(controller.max) ? controller.max : 100;
-              scope.$emit('global max changed');
+              scope.$broadcast('global max changed');
             });
 
             // Observe the step attr (default 1)
             iAttrs.$observe('step', function (newVal) {
               controller.step = +newVal;
               controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
-              scope.$emit('global step changed');
+              scope.$broadcast('global step changed');
             });
 
           };
@@ -173,7 +173,9 @@
 
           function updateIfChanged(newVal, oldVal) {
             if (!angular.isUndefined(oldVal) && !isNaN(ngModel.$modelValue) && oldVal !== newVal) {
-              ngModel.$setViewValue(getFormattedValue(ngModel.$modelValue));
+//              ngModel.$setViewValue(getFormattedValue(ngModel.$modelValue)); //breaks starting position (addition of some step value, the thumb can be slid manually back to 0% though)
+              ngModel.$setViewValue(ngModel.$modelValue);
+              ngModel.$render();
             }
           }
 
@@ -191,8 +193,6 @@
             (_cache.min == uiSliderCtrl.max) ? minSliderElem.addClass('minAtMax') : minSliderElem.removeClass('minAtMax');
 
             updateIfChanged(_cache.min, oldVal);
-
-            ngModel.$render();
           });
           scope.$on('global min changed', function observeGlobalMin() {
             var oldVal = _cache.min;
@@ -202,7 +202,6 @@
             _cache.min = !isNaN(_cache.min) ? _cache.min : 0;
 
             updateIfChanged(_cache.min, oldVal);
-            ngModel.$render();
           });
 
           // Observe the max attr (default 100)
@@ -212,8 +211,6 @@
             _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
 
             updateIfChanged(_cache.max, oldVal);
-
-            ngModel.$render();
           });
           scope.$on('global max changed', function observeGlobalMax() {
             var oldVal = _cache.max;
@@ -223,7 +220,6 @@
             _cache.max = !isNaN(_cache.max) ? _cache.max : 100;
 
             updateIfChanged(_cache.max, oldVal);
-            ngModel.$render();
           });
 
           // Observe the step attr (default 1)
@@ -235,7 +231,6 @@
             _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
             updateIfChanged(_cache.step, oldVal);
-            ngModel.$render();
           });
           scope.$on('global step changed', function observeGlobalStep() {
             var oldVal = _cache.step;
@@ -246,7 +241,6 @@
             _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
 
             updateIfChanged(_cache.step, oldVal);
-            ngModel.$render();
           });
           ////////////////////////////////////////////////////////////////////
           // RENDERING
@@ -277,10 +271,12 @@
           // Checks that it's on the step
           ngModel.$parsers.push(function stepParser(value) {
             ngModel.$setValidity('step', true);
-            return Math.round(value / _cache.step) * _cache.step;
+//            return Math.round(value / _cache.step) * _cache.step; //this breaks the starting number of the min thumb (adds some degree of step to it)
+            return value;
           });
           ngModel.$formatters.push(function stepValidator(value) {
-            if (!ngModel.$isEmpty(value) && value !== Math.round(value / _cache.step) * _cache.step) {
+//            if (!ngModel.$isEmpty(value) && value !== Math.round(value / _cache.step) * _cache.step) {
+            if (!ngModel.$isEmpty(value) && value !== value) {
               ngModel.$setValidity('step', false);
               return undefined;
             } else {
