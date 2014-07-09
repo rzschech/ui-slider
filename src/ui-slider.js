@@ -87,8 +87,13 @@
 
             // Observe the step attr (default 1)
             iAttrs.$observe('step', function (newVal) {
-              controller.step = +newVal;
-              controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
+              if (newVal === 'any') {
+                controller.step = 0;
+              }
+              else {
+                controller.step = +newVal;
+                controller.step = !isNaN(controller.step) && controller.step > 0 ? controller.step : 1;
+              }
               scope.$broadcast('global step changed');
             });
 
@@ -160,7 +165,9 @@
           function _formatValue(value, min, max, step) {
             var formattedValue = value;
             if (min > max) return max;
-            formattedValue = Math.round(formattedValue / step) * step;
+            if (step) {
+              formattedValue = Math.round(formattedValue / step) * step;
+            }
             formattedValue = Math.max(Math.min(formattedValue, max), min);
             return formattedValue;
           }
@@ -225,10 +232,14 @@
           // Observe the step attr (default 1)
           iAttrs.$observe('step', function observeStep(newVal) {
             var oldVal = _cache.step;
-
+            if (newVal === 'any') {
+              _cache.step = 0;
+            }
+            else {
 //            _cache.step = +newVal;
-            _cache.step = newVal; //fix for step breaking the min/max thumb positioning
-            _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
+              _cache.step = newVal; //fix for step breaking the min/max thumb positioning
+              _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
+            }
 
             updateIfChanged(_cache.step, oldVal);
           });
