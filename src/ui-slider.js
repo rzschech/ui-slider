@@ -248,9 +248,6 @@
 
             _cache.step = (angular.isDefined(iAttrs.step)) ? _cache.step : uiSliderCtrl.step;
 
-            // Secure no NaN here...
-            _cache.step = !isNaN(_cache.step) && _cache.step > 0 ? _cache.step : 1;
-
             updateIfChanged(_cache.step, oldVal);
           });
           ////////////////////////////////////////////////////////////////////
